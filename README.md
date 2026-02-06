@@ -1,16 +1,20 @@
-# Arabidopsis-Variant-DB-REST-API
- A relational database for storing variant information from VCF files of different *Arabidopsis thaliana* strains and a REST API service for convenient access to this information.
+# Variant-DB-REST-API
+This repository provides the technical infrastructure for establishing a relational database optimised for storing variant data, along with a REST API service that enables convenient and programmatic access to the data.
 
 ## Database
-The SQLite (v3.34.1) engine was employed to establish a relational database, aiming to store critical data extracted from VCF (v4.1) files originating from different *Arabidopsis thaliana* strains. The database was designed with a straightforward structure to streamline both data population and query processes.
+This technical infrastructure leverages the SQLite engine (v3.34.1) to establish a relational database designed for storing variant data extracted from VCF files (v4.1).
+
+The database schema, defined in [schema.sql](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/Database/schema.sql), contains the SQL code required to create the database structure. The schema was originally designed to accommodate variant data from different *Arabidopsis thaliana* strains; however, it can be adapted to store variant data from other organisms. The database follows a straightforward and modular design to facilitate both data population and efficient querying.
+
+The example database, [database.sqlite](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/Database/database.sqlite), is a populated instance created using this infrastructure. The steps followed to design, populate, and query the database are described in the sections below.
 
 <p align="center">
-<img src="https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/Images/Database_ER_diagram.jpg" width="450">
+<img src="https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/Images/Database_ER_diagram.jpg" width="450">
 </p>
 
 The structure of the database is made up of two tables, the *Datasets* table and the *Variants* table. 
 
-The *Datasets* table includes the unique identifiers for the genomes featured in each file (e.g. *7208*) labeled as **genome**, along with the full file names (e.g. *genome_7208.vcf*) labeled as **dataset**.
+The *Datasets* table stores unique genome identifiers (ideally reflected in each file name e.g. *7208*) under the field **genome**, along with the corresponding full file names (e.g. *genome_7208.vcf*) stored under **dataset**.
 
 | **genome**      | **dataset**                   |
 | :-------------: | :---------------------------: |
@@ -30,10 +34,8 @@ An identifying attribute, designated as **id**, was introduced as an incremental
 | 2      | 7208     | 1            | 214644    | A           | AT        | 40        | 39         | 1|1       |
 | 3      | 7208     | 1            | 851442    | T           | TA        | 40        | 135        | 1|1       |
 
-**Note:** The database ([database.sqlite](https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/Database/database.sqlite)) has already been populated with the input data.  In order to create a database with information from different VCF files, an empty SQLite database needs to be created using the [schema.sql](https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/Database/schema.sql) file.
-
 ## Importing the data
-The database was populated using the Python script [dataimport_tool.py](https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/dataimport_tool.py). The program takes the names of VCF files as command-line arguments, parsing each file and populating the database tables accordingly. It is designed to handle a variable number of VCF files.
+The database was populated using the Python script [dataimport_tool.py](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/dataimport_tool.py). The program takes the names of VCF files as command-line arguments, parsing each file and populating the database tables accordingly. It is designed to handle a variable number of VCF files.
 
 To run the program, users just need to enter the name of the VCF files whose content they want to be uploaded to the database.
 
@@ -44,14 +46,14 @@ To run the program, users just need to enter the name of the VCF files whose con
 ## Server 
 A RESTful web service was created using the *Node.js* environment and the *Express.js* framework to enable users to programmatically retrieve and interact with data stored in the variant database.
 
-In the [server.js](https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/Server/server.js) script the *Express* dependency is loaded, an object is instantiated using the ```express()``` method, and subsequently, an HTTP server is launched to listen for requests on ```port 3000```. 
+In the [server.js](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/Server/server.js) script the *Express* dependency is loaded, an object is instantiated using the ```express()``` method, and subsequently, an HTTP server is launched to listen for requests on ```port 3000```. 
 
-A router ([router.js](https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API/blob/main/Server/router.js)) was created to organise and modularise the handling of different API endpoints, which was later imported into *server.js* and linked to the API path.
+A router ([router.js](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/Server/router.js)) was created to organise and modularise the handling of different API endpoints, which was later imported into *server.js* and linked to the API path.
 
 ## Server deployment 
 Users need to deploy the server first in order to interact with the database. To deploy the server, the content of this repository needs to be cloned on your device. 
 ```
-git clone https://github.com/AkirisMc/Arabidopsis-Variant-DB-REST-API.git
+git clone https://github.com/AkirisMc/Variant-DB-REST-API.git
 cd Arabidopsis-Variant-DB-REST-API.git
 ```
 Users then should navigate to the **Server** directory, which includes the *server.js* file along with other associated files. To deploy the server, execute the *server.js* file in the terminal.
