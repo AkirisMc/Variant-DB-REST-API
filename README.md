@@ -54,7 +54,7 @@ A router ([router.js](https://github.com/AkirisMc/Variant-DB-REST-API/blob/main/
 Users need to deploy the server first in order to interact with the database. To deploy the server, the content of this repository needs to be cloned on your device. 
 ```
 git clone https://github.com/AkirisMc/Variant-DB-REST-API.git
-cd Arabidopsis-Variant-DB-REST-API.git
+cd Variant-DB-REST-API.git
 ```
 Users then should navigate to the **Server** directory, which includes the *server.js* file along with other associated files. To deploy the server, execute the *server.js* file in the terminal.
 ```
